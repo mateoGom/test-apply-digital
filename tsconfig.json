@@ -14,10 +14,19 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./src",
-       "paths": {
-      "@common/*": ["common/*"],
-      "@providers/*": ["providers/*"],
-      "@controllers/*": ["controllers/*"]
+    "paths": {
+      "@common/*": [
+        "common/*"
+      ],
+      "@providers/*": [
+        "publicModule/providers/*"
+      ],
+      "@controllers/*": [
+        "publicModule/controllers/*"
+      ],
+      "@entity/*": [
+        "publicModule/providers/*"
+      ],
     },
     "incremental": true,
     "skipLibCheck": true,
