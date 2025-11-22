@@ -11,18 +11,17 @@ import { ProductModule } from './publicModule/providers/products/module/product.
 
 
 @Module({
+
   imports: [
-    //  TypeOrmModule.forRootAsync({
+   AppConfigModule,
+
+    // TypeOrmModule.forRootAsync({
     //   imports: [ConfigModule, AppConfigModule],
     //   inject: [DbConfigService],
-
     //   useFactory: async (dbConfigService: DbConfigService): Promise<TypeOrmModuleOptions> => {
     //     const dbConfig = await dbConfigService.getDbConfig();
     //     return {
     //       ...dbConfig,
-    //       type: dbConfig.type as 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mongodb' | 'oracle' | 'mssql',
-    //       synchronize: true,
-    //       cache: false,
     //     };
     //   },
     // }),

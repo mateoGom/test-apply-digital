@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 @Injectable()
 export class DbConfigService {
@@ -8,9 +9,8 @@ export class DbConfigService {
   /**
    * Get DB configuration for Postgres (Docker Compose)
    */
-  async getDbConfig() {
-    // Puedes usar variables de entorno para estos valores en tu docker-compose.yml
-    const dbConfig = {
+   getDbConfig(): TypeOrmModuleOptions {
+    const dbConfig: TypeOrmModuleOptions = {
       type: 'postgres',
       host: this.configService.get('POSTGRES_HOST', 'localhost'),
       port: parseInt(this.configService.get('POSTGRES_PORT', '5432'), 10),
