@@ -17,6 +17,7 @@ services:
       - CONTENTFUL_ACCESS_TOKEN=wXfbqDOLix1ksxVH8NcRX1oE4KYytPW-ULqpXCxx3RU
       - CONTENTFUL_ENVIRONMENT=master
       - CONTENTFUL_CONTENT_TYPE=product
+      - CHOKIDAR_USEPOLLING=true
     volumes:
       - .:/app
       - /app/node_modules

@@ -13,7 +13,7 @@ export class ContentfulAdapter {
     product.price = item.fields.price;
     product.currency = item.fields.currency;
     product.stock = item.fields.stock;
-    product.createdAt = new Date(item.sys.createdAt);
+    // Let TypeORM auto-generate createdAt with sync timestamp
     return product;
   }
 }

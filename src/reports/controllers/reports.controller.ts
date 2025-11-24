@@ -29,7 +29,9 @@ export class ReportsController {
     }
     if (startDate && endDate) {
         params.startDate = new Date(startDate);
-        params.endDate = new Date(endDate);
+        const end = new Date(endDate);
+        end.setHours(23, 59, 59, 999);
+        params.endDate = end;
     }
 
     return strategy.generate(this.productRepository, params);

@@ -63,6 +63,7 @@ export class ProductsByCategoryReport implements IReportStrategy {
       .createQueryBuilder('product')
       .select('product.category', 'category')
       .addSelect('COUNT(product.id)', 'count')
+      .where('product.deletedAt IS NULL')
       .groupBy('product.category')
       .getRawMany();
 

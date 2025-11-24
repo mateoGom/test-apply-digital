@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetProductController } from './getProduct.controller';
+import { GetProductController } from './product.controller';
 import { ProductService } from '@providers/products/provider/product.service';
 
 const mockProductService = {

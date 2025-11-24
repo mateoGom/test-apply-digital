@@ -1,7 +1,6 @@
-
 import { Injectable, Logger, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Between, Like, IsNull, Not } from 'typeorm';
+import { Repository } from 'typeorm';
 import { ProductEntity } from '@entity/products/entity/product.entity';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
@@ -69,7 +68,7 @@ export class ProductService implements IProductService {
       totalPages: Math.ceil(total / limit),
     };
 
-    await this.cacheManager.set(cacheKey, result, 3600000); // Cache for 1 hour (ms in v5, seconds in v4. Let's assume ms for safety or check docs. NestJS cache-manager usually uses ms in newer versions. 3600 was seconds. 3600000 is ms.)
+    await this.cacheManager.set(cacheKey, result, 3600000);
     return result;
   }
 
@@ -81,15 +80,39 @@ export class ProductService implements IProductService {
 
   private async invalidateCache(): Promise<void> {
     try {
+      this.logger.log('Invalidating cache...');
       const store = (this.cacheManager as any).store;
-      if (store) {
-        // Get all keys matching 'products_*'
+
+      // Check if store supports keys method (Redis usually does)
+      if (store && typeof store.keys === 'function') {
         const keys = await store.keys('products_*');
-        if (keys && keys.length > 0) {
-          // Delete all product cache keys
-          await Promise.all(keys.map((key: string) => this.cacheManager.del(key)));
+        this.logger.log(`Found ${keys.length} cache keys to invalidate: ${keys.join(', ')}`);
+
+        if (keys.length > 0) {
+          const promises = keys.map(async (key: string) => {
+             try {
+                 await this.cacheManager.del(key);
+             } catch (e) {
+                 this.logger.error(`Failed to delete key ${key}`, e);
+             }
+          });
+
+          await Promise.all(promises);
           this.logger.log(`Invalidated ${keys.length} cache entries`);
         }
+      } else {
+          this.logger.warn('Cache store does not support "keys" method. Cannot invalidate specific keys.');
+
+          // Fallback: clear entire cache
+          if (typeof (this.cacheManager as any).clear === 'function') {
+              this.logger.log('Using cacheManager.clear() as fallback');
+              await (this.cacheManager as any).clear();
+          } else if (typeof (this.cacheManager as any).reset === 'function') {
+              this.logger.log('Using cacheManager.reset() as fallback');
+              await (this.cacheManager as any).reset();
+          } else {
+              this.logger.error('No clear/reset method found on cache manager');
+          }
       }
     } catch (error) {
       this.logger.warn('Failed to invalidate cache', error);
