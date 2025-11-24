@@ -34,7 +34,7 @@ export default tseslint.config(
   },
   // Disable unsafe-any rules for cache manager operations
   {
-    files: ['**/product.service.ts'],
+    files: ['src/products/providers/products/provider/product.service.ts'],
     rules: {
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
@@ -43,7 +43,7 @@ export default tseslint.config(
   },
   // Disable unsafe rules for test files
   {
-    files: ['**/*.spec.ts'],
+    files: ['**/*.spec.ts', '**/*.test.ts'],
     rules: {
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
@@ -52,7 +52,7 @@ export default tseslint.config(
   },
   // Disable require-await for controllers
   {
-    files: ['**/product.controller.ts'],
+    files: ['src/products/controllers/products/product.controller.ts'],
     rules: {
       '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/no-unsafe-return': 'off',
